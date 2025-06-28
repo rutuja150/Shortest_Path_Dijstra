@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Least Time Travel</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>Least Time Travel Path</h1>
+
+  <form method="POST">
+    <label>Select Source City:</label>
+    <select name="src" required>
+      {% for city in nodes %}
+      <option value="{{ city }}" {% if city == src %}selected{% endif %}>{{ city }}</option>
+      {% endfor %}
+    </select>
+
+    <label>Select Destination City:</label>
+    <select name="dst" required>
+      {% for city in nodes %}
+      <option value="{{ city }}" {% if city == dst %}selected{% endif %}>{{ city }}</option>
+      {% endfor %}
+    </select>
+
+    <label>Select Algorithm:</label>
+    <select name="algo" required>
+      <option value="dijkstra" {% if algo == "dijkstra" %}selected{% endif %}>Dijkstra</option>
+      <option value="astar" {% if algo == "astar" %}selected{% endif %}>A*</option>
+    </select>
+
+    <button type="submit">Find Path</button>
+  </form>
+
+  {% if edges %}
+  <h2>Graph Edges</h2>
+  <table>
+    <tr>
+      <th>From</th>
+      <th>To</th>
+      <th>Time</th>
+    </tr>
+    {% for u, v, w in edges %}
+    <tr>
+      <td>{{ u }}</td>
+      <td>{{ v }}</td>
+      <td>{{ w }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+
+  {% if path %}
+  <h2>Shortest Path</h2>
+  <p><strong>From:</strong> {{ src }} <strong>To:</strong> {{ dst }}</p>
+  <p>{{ " → ".join(path) }}</p>
+  <p><strong>Total Time:</strong> {{ total_time }}</p>
+  {% endif %}
+
+  {% if mst %}
+  <h2>Minimum Spanning Tree (MST)</h2>
+  <table>
+    <tr>
+      <th>From</th>
+      <th>To</th>
+      <th>Time</th>
+    </tr>
+    {% for u, v, w in mst %}
+    <tr>
+      <td>{{ u }}</td>
+      <td>{{ v }}</td>
+      <td>{{ w }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+</body>
+</html>
